@@ -1,0 +1,26 @@
+{
+  "name": "studygulp",
+  "version": "1.0.0",
+  "description": "studying gulp",
+  "main": "index.js",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/6669venus/studygulp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/6669venus/studygulp/issues"
+  },
+  "homepage": "https://github.com/6669venus/studygulp#readme"
+}
