@@ -1,0 +1,94 @@
+var gulp = require('gulp'),
+    hyeriserver = require('gulp-hyeriserver'),
+    morgan = require('morgan');
+    
+var ts = require("gulp-typescript"),
+    tsProject = ts.createProject("tsconfig.json");
+var sourcemaps = require('gulp-sourcemaps');
+var path = require('path');
+
+var logger = morgan(':method :status (:response-time ms) :url (size: :res[content-length])');
+gulp.task('hs', function() {
+  gulp.src('.')
+    .pipe(hyeriserver({
+      port:8080,
+      host:"0.0.0.0",
+      livereload: false,
+      directoryListing: false,
+      open: false,
+      middleware: logger
+    }));
+});
+
+gulp.task("ts", function () {
+    return tsProject.src()
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(tsProject())
+        .js
+        // .pipe(sourcemaps.write({
+        //     sourceRoot: function (file) {
+        //         var sourceFile = path.join(file.cwd, file.sourceMap.file);
+        //         return path.relative(path.dirname(sourceFile), file.cwd);
+        //     }
+        // }))
+        .pipe(sourcemaps.write('.', {
+            sourceRoot: function(file){ return file.cwd + '/src'; }
+        }))
+        .pipe(gulp.dest("."));
+});
+
+gulp.task("ts-no-source-map", function () {
+    return tsProject.src()
+        .pipe(tsProject())
+        .js.pipe(gulp.dest("."));
+});
+
+//Not work yet, might related to typescript source code
+
+var browserify = require("browserify");
+var source = require('vinyl-source-stream');
+var tsify = require("tsify");
+var uglify = require('gulp-uglify');
+var buffer = require('vinyl-buffer');
+
+gulp.task("ts2", function () {
+    return browserify({
+        basedir: '.',
+        outFile: "js/app.js",
+        debug: true,
+        entries: ['src/Test.ts'],
+        cache: {},
+        packageCache: {}
+    })
+    .plugin(tsify, {
+        noImplicitAny: true,
+        removeComments: true,
+        module: "commonjs",
+        target: "es5"
+    })
+    .bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(gulp.dest("js"));
+});
+
+gulp.task("ts3", function () {
+    return browserify({
+        basedir: '.',
+        debug: true,
+        entries: ['src/Test.ts'],
+        cache: {},
+        packageCache: {}
+    })
+    .plugin(tsify)
+    .bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest("js"));
+});
+
+//Read more on 
+//https://github.com/gulpjs/gulp/blob/master/docs/recipes/browserify-uglify-sourcemap.md
