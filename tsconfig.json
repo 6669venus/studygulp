@@ -1,9 +1,15 @@
 {
-    "files": [
-        "src/main.ts"
-    ],
+    "compileOnSave": false,
     "compilerOptions": {
+        "outFile": "js/app.js",
+        "sourceMap": true,
         "noImplicitAny": true,
-        "target": "es5"
-    }
+        "removeComments": true,
+        "module": "amd",
+        "target": "es5",
+        "allowJs": true
+    },
+    "include": [
+        "src/**/*"
+    ]
 }
