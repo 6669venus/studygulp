@@ -64,7 +64,18 @@ gulp.task("ts2", function () {
     .pipe(gulp.dest("js"));
 });
 
-var logger = morgan(':method :status (:response-time ms) :url (size: :res[content-length])');
+const BLACK = '\x1b[30m';
+const RED = '\x1b[31m';
+const GREEN = '\x1b[32m';
+const YELLOW ='\x1b[33m';
+const BLUE = '\x1b[34m';
+const MAGENTA = '\x1b[35m';
+const CYAN = '\x1b[36m';
+const WHITE = '\x1b[37m';
+const CLEAR_COLOR = '\x1b[0m';
+
+var logger = morgan(CYAN + ':method :status' + CLEAR_COLOR + ' (:response-time ms) [:date[clf]] :url (size: :res[content-length])');
+//var logger = morgan(':method :status (:response-time ms) :url (size: :res[content-length])');
 gulp.task('ws2', function() {
   gulp.src('.')
     .pipe(webserver({
