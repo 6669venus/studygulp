@@ -1,4 +1,4 @@
-# studygulp
+# init-gulp
 ```
 npm install gulp-cli -g
 npm init
